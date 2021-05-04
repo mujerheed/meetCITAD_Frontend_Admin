@@ -43,7 +43,7 @@ export default new Vuex.Store({
         date:  payload.date,
         time: payload.time
       }
-      console.log({eventDetail: eventDetail})
+      console.log({eventDetail})
       axios.post("http://localhost:3030/event/events", payload)
         .then(result => {
           console.log(result.data)
