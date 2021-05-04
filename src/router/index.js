@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+import Home from '@/components/Home'
+import SignInAdmin from '@/components/SubComponent/SignInAdmin'
+import EventsList from '@/components/Events/EventsList'
+import SingleEvent from '@/components/Events/SingleEvent'
+import CreateEvent from '@/components/Events/CreateEvent'
+import AttendeesUsers from '@/components/Attendees/AttendeesUsers'
+import SuggestionInbox from '@/components/Attendees/SuggestionInbox'
 
 Vue.use(VueRouter)
 
@@ -10,13 +17,44 @@ const routes = [
     name: 'Home',
     component: Home
   },
+
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/signIn',
+    name: 'SignIn',
+    component: SignInAdmin
+  },
+
+  {
+    path: '/events',
+    name: 'EventList',
+    component: EventsList
+  },
+
+  {
+    path: '/events/:_eventID',
+    name: 'SingleEvent',
+    props: true,
+    component: SingleEvent
+  },
+
+  {
+    path: '/events/:_eventID/attendees',
+    name: 'Attendees',
+    props: true,
+    component: AttendeesUsers
+  },
+
+  {
+    path: '/add-event',
+    name: 'CreateEvent',
+    component: CreateEvent
+  },
+
+
+  {
+    path: '/suggestion-message',
+    name: 'SuggestionInbox',
+    component: SuggestionInbox
   }
 ]
 
