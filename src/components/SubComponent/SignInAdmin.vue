@@ -16,11 +16,11 @@
                     
                     <v-card-text>
                         <v-container>
-                            <v-form @submit.prevent="userSign" method="POST">
+                            <form @submit.prevent="userSign" method="POST">
                                 <v-text-field
                                     name="email"
                                     label="Email"
-                                    v-model="email"
+                                    v-model.trim="email"
                                     required
                                     outlined
                                 ></v-text-field>
@@ -29,7 +29,7 @@
                                     label="Password"
                                     id="password"
                                     :type=" show ? 'text': 'password'"
-                                    v-model="password"
+                                    v-model.trim="password"
                                     :append-icon="show ? 'visibility' : 'visibility_off' "
                                     @click:append="show = !show"
                                     required
@@ -40,7 +40,7 @@
                                     <v-btn color="blue--text" type="submit">Sign In</v-btn>
                                 </v-layout>
                             </v-card-actions>
-                            </v-form>
+                            </form>
                         </v-container>
                     </v-card-text>
                 </v-card>
@@ -61,8 +61,15 @@ export default {
 
     methods: {
         userSign(){
-            this.$store.dispatch('onSignIn', {email: this.email, password: this.password})
-            alert('User In')
+
+          if (this.email == '' && this.password == '') {
+            return 
+          }
+          this.$store.dispatch('signAdminIn', {
+            email: this.email,
+            password: this.password
+            })
+          
         }
 
     }

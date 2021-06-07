@@ -6,8 +6,9 @@ import SignInAdmin from '@/components/SubComponent/SignInAdmin'
 import EventsList from '@/components/Events/EventsList'
 import SingleEvent from '@/components/Events/SingleEvent'
 import CreateEvent from '@/components/Events/CreateEvent'
-import AttendeesUsers from '@/components/Attendees/AttendeesUsers'
-import SuggestionInbox from '@/components/Attendees/SuggestionInbox'
+import RegisteredUsers from '@/components/Users/RegisteredUsers'
+import AttendedUsers from '@/components/Users/AttendeesList'
+import SuggestionInbox from '@/components/Users/SuggestionInbox'
 
 Vue.use(VueRouter)
 
@@ -38,11 +39,17 @@ const routes = [
   },
 
   {
+    path: '/events/:_eventID/registration',
+    name: 'Register',
+    component: RegisteredUsers
+  },
+
+  {
     path: '/events/:_eventID/attendees',
     name: 'Attendees',
-    props: true,
-    component: AttendeesUsers
+    component: AttendedUsers
   },
+
 
   {
     path: '/add-event',

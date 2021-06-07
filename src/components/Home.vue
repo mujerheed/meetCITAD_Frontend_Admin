@@ -1,14 +1,14 @@
 <template>
   <div>
-    <template v-if="false">
+    <template v-if="notAuth">
       <Welcome />
     </template>
 
-    <template v-else>
+    <template v-if="!notAuth">
       <v-container grid-list-lg >
         <v-layout row wrap mt-3>
             <v-flex class="text-center">
-                <p>Some cappp</p>
+                <p>Welcome Admin to CITAD Event App</p>
             </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -16,7 +16,7 @@
                 <v-btn color="info" large to="/events">Explore Events</v-btn>
             </v-flex>
             <v-flex xs-12 sm6 class="text-xs-center text-sm-left">
-                <v-btn color="info" large to="/addEvent">Organise Event</v-btn>
+                <v-btn color="info" large to="/add-event">Organise Event</v-btn>
             </v-flex>
         </v-layout>
         <v-layout row wrap class="mt-2">
@@ -25,15 +25,15 @@
                  <v-carousel
                   show-arrows-on-hover
                 >
-                    <v-carousel-item
-                      v-for="image in eventImage"
-                      :key="image.id"
-                      :src="image.imageUrl"
-                      :to='`events/${image.id}`'
-                      reverse-transition="fade-transition"
-                      transition="fade-transition"
-                    >
-                    </v-carousel-item>
+                  <v-carousel-item
+                    v-for="image of latestEvents"
+                    :key="image._id"
+                    :src="`http://localhost:3030/${image.eventImage}`"
+                    :to='`events/${image._id}`'
+                    reverse-transition="fade-transition"
+                    transition="fade-transition"
+                  >
+                  </v-carousel-item>
                 </v-carousel>
               </v-card>
             </v-flex>
@@ -54,8 +54,13 @@ import Welcome from '../views/Welcome.vue'
       
     }),
     computed: {
-      eventImage() {
-        return this.$store.getters.loadEvents
+      notAuth(){
+        let auth = this.$store.getters.adminAuth 
+        return auth === false || auth === null
+      },
+
+      latestEvents() {
+        return this.$store.getters.loadEvents.slice(0, 5)
       }
     }
   }

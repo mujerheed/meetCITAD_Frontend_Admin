@@ -19,17 +19,26 @@
                             <v-text-field
                                 name="title"
                                 label="Title"
+                                required
                                 v-model.trim="editedTitle"
                             ></v-text-field>
                             <v-text-field
                                 name="description"
                                 label="Description"
+                                required
                                 v-model.trim="editedDescription"
                                 textarea
                             ></v-text-field>
                             <v-text-field
+                                name="venue"
+                                label="Venue"
+                                required
+                                v-model.trim="editedLocation"
+                            ></v-text-field>
+                            <v-text-field
                                 name="hostBy"
                                 label="Host By"
+                                required
                                 v-model.trim="editedHostBy"
                             ></v-text-field>
                             <v-menu>
@@ -37,6 +46,7 @@
                                 <v-text-field
                                     name="date"
                                     label="Date"
+                                    required
                                     v-on="on"
                                     readonly
                                     :value="editedDate"
@@ -80,38 +90,37 @@
 </template>
 
 <script>
-import { format, parseISO } from 'date-fns'
 export default {
     props: ['event'],
 
     data (){
         return {
-            dialog: false,
-            editedTitle: this.event.title,
-            editedDescription: this.event.description,
-            editedHostBy: this.event.hostBy,
-            editedDate: this.event.date,
-            editedTime: this.event.time
-        }
-    },
-
-    computed: {
-        formatDate(){
-            return this.editedDate ? format(parseISO(this.editedDate), 'EEEE, MMMM do yyyy') : ''
+          dialog: false,
+          editedTitle: this.event.title,
+          editedDescription: this.event.description,
+          editedLocation: this.event.venue,
+          editedHostBy: this.event.hostBy,
+          editedDate: null,
+          editedTime: null
         }
     },
 
     methods: {
         onSave() {
-            this.dialog = false
-            console.log({
-                title: this.editedTitle,
-                description: this.editedDescription,
-                hostBy: this.editedHostBy,
-                date: this.editedDate,
-                time: this.editedTime
-            });
-        }
+          this.dialog = false
+          const editedEvent = {
+            id: this.event._id,
+            title: this.editedTitle,
+            description: this.editedDescription,
+            venue: this.editedLocation,
+            hostBy: this.editedHostBy,
+            date: this.editedDate,
+            time: this.editedTime
+          }
+          
+          this.$store.dispatch('updateEvent', editedEvent)
+        },
+        
     }
 }
 </script>

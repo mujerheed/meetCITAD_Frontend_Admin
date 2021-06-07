@@ -28,8 +28,8 @@
                             <v-row>
                                 <v-col cols="4">
                                     <v-card height="150" width="150">
-                                        <v-img :src="event.imageUrl"
-                                        height="100%" width="100%" alt="photo">
+                                        <v-img :src="`http://localhost:3030/${event.eventImage}`" :alt="event.title"
+                                        height="100%" width="100%" >
                                         </v-img>
                                     </v-card>
                                 </v-col>
@@ -38,7 +38,7 @@
                                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam dicta quaerat recusandae libero maiores saepe nemo eaque voluptate odit esse ducimus aliquid laborum, tenetur magni ipsa exercitationem facere tempore minima!
                                     </div>
                                     <v-card-actions class="align-end">
-                                        <v-btn color="info" class="text-center mr-1 text-capitalize" @click="deleteme(event._id)">
+                                        <v-btn color="info" class="text-center mr-1 text-capitalize" @click="deleteEvent(event._id)">
                                             <v-icon left>delete</v-icon>
                                             <span>Delete</span>
                                         </v-btn>
@@ -64,23 +64,24 @@ export default {
     name: 'EventsList',
 
     data: () => ({
-        msg: ''
+        msg: '',
     }),
 
-    computed: {
-        eventLists() {
-            return this.$store.getters.loadEvents
-        }
-    }, 
     methods: {
-        deleteme(eventId) {
-            axios.delete(`http://localhost:3030/event/events/${eventId}`).then(
+        deleteEvent(eventId) {
+            axios.delete(`event/events/${eventId}`).then(
                 res => {
-                    this.msg = res.data.msg
+                    this.msg = res.data.message
                 }
             ).catch(() => {
                 console.log("Something is not right out there")
             })
+        }
+    },
+
+    computed: {
+        eventLists() {
+            return this.$store.getters.loadEvents
         }
     }
 }

@@ -7,18 +7,20 @@
         </v-layout>
         <v-layout row wrap>
             <v-flex xs12>
-                <form method="POST" @submit.prevent="onCreateEvent" enctype="multipart/form-data" ref="form">
-                    <!-- <v-layout row wrap>
+                <form method="POST" 
+                  @submit.prevent="onCreateEvent" 
+                  enctype="multipart/form-data" 
+                  ref="myForm">
+                    <v-layout row wrap>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-text-field
                                 name="title"
                                 label="Title"
                                 id="title"
                                 v-model="title"
-                                prepend-icon="mdi-folder"
                                 required
+                                prepend-icon="mdi-folder"
                             ></v-text-field>
-                            <input type="file" name="eventImage" id="eventImage">
                         </v-flex>
                     </v-layout>
                     <v-layout row wrap>
@@ -27,9 +29,9 @@
                                 v-model="description"
                                 auto-grow
                                 label="Description"
-                                id="description"
-                                prepend-icon="edit"
+                                name="description"
                                 required
+                                prepend-icon="edit"
                             ></v-textarea>
                         </v-flex>
                     </v-layout>
@@ -40,8 +42,8 @@
                                 label="Venue"
                                 id="venue"
                                 v-model="venue"
-                                prepend-icon="location_on"
                                 required
+                                prepend-icon="location_on"
                             ></v-text-field>
                         </v-flex>
                     </v-layout>
@@ -50,10 +52,10 @@
                             <input 
                             type="file" 
                             accept="image/*"
-                            name="eventImg"
+                            name="eventImage"
                             style="display:none" 
-                            ref="imageUrl"
-                            @change="onPickedImage">
+                            ref="imageControl"
+                            @change="onPicked">
                             <v-icon left>mdi-camera</v-icon>
                             <v-btn raised @click="onPickImage">
                                 Upload Picture
@@ -70,8 +72,8 @@
                                 label="Host By"
                                 id="hostBy"
                                 v-model="hostBy"
-                                prepend-icon="person"
                                 required
+                                prepend-icon="person"
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 offset-sm3>
@@ -82,7 +84,8 @@
                                     label="Date"
                                     v-on="on"
                                     readonly
-                                    :value="formatDate"
+                                    :value="date"
+                                    required
                                     prepend-icon="date_range"
                                 ></v-text-field>
                                 </template>
@@ -98,11 +101,14 @@
                                     :value="time"
                                     v-on="on"
                                     readonly
+                                    scrollable
+                                    required
                                     prepend-icon="schedule"
                                 ></v-text-field>
                                 </template>
                                 <v-time-picker
                                     v-model="time"
+                                    format="24hrs"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
@@ -111,17 +117,7 @@
                                 <v-btn color="" type="submit">Create Event</v-btn>
                             </v-card-actions>
                         </v-flex>
-                    </v-layout> -->
-                    <v-text-field
-                                name="hostBy"
-                                label="Host By"
-                                id="hostBy"
-                                v-model="hostBy"
-                                prepend-icon="person"
-                                required
-                            ></v-text-field>
-                    <input type="file" name="eventImage" id="eventImage">
-                    <v-btn color="" type="submit">Create Event</v-btn>
+                    </v-layout>
                 </form>
             </v-flex>
         </v-layout>
@@ -129,8 +125,6 @@
 </template>
 
 <script>
-import { format, parseISO } from 'date-fns'
-
 export default {
     name: 'CreateEvent',
 
@@ -141,51 +135,41 @@ export default {
         hostBy: null,
         date: null,
         time: null,
-        imageUrl: null,
+        eventImage: null,
         imageSrc: null,
         isDisplay: false
     }),
 
     methods: {
-        // onPickImage () {
-        //     this.$refs.imageUrl.click()
-        // },
+        onPickImage () {
+            this.$refs.imageControl.click()
+        },
 
-        // onPickedImage (event) {
-        //     const file = event.target.files
-        //     let imageName = file[0].name
+        onPicked(event) {
+            const file = event.target.files[0]
+            this.eventImage = file
+            const image = this.eventImage.name
 
-        //     if (imageName.lastIndexOf('.') <= 0) {
-        //         alert ('Please pick a valid image')
-        //     }
-        //     const fileReader = new FileReader()
-        //     console.log(this.$refs.name);
-        //     fileReader.addEventListener('load', () => {
-        //         this.imageSrc = fileReader.result
-        //     })
-        //     fileReader.readAsDataURL(file[0])
-        //     this.imageUrl = file[0].name
-        // },
-
-        onCreateEvent () {
-            this.$store.dispatch('createEvent',{
-                title: this.title,
-                description: this.description,
-                venue: this.venue,
-                date: this.date,
-                time: this.time,
-                hostBy: this.hostBy
+             if (image.lastIndexOf('.') <= 0) {
+                alert ('Please pick a valid image')
+            }
+            const fileReader = new FileReader()
+            fileReader.addEventListener('load', () => {
+                this.imageSrc = fileReader.result
             })
+            fileReader.readAsDataURL(this.eventImage)
+        },
+        
+        onCreateEvent () {
+
+            const myFormData = new FormData(this.$refs.myForm)
+            this.$store.dispatch('createEvent', myFormData)
+             
             this.$router.push('/events')
-            console.log(this.$refs.form[1].value)
+             
         }
     },
 
-    computed: {
-        formatDate(){
-            return this.date ? format(parseISO(this.date), 'EEEE, MMMM do yyyy') : ''
-        }
-    }
 }
 </script>
 
