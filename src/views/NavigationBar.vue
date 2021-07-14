@@ -17,7 +17,7 @@
               <v-icon>exit_to_app</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-              <span>LogOut</span>
+              <span @click="logout">Log Out</span>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -30,7 +30,7 @@
                 class="hidden-sm-and-up"
                 v-if="signIn"
             ></v-app-bar-nav-icon>
-            <span>meetCITAD</span>
+            <router-link to="/" class="styleLink">meetCITAD</router-link>
         </v-app-bar-title>
         
         <v-spacer></v-spacer>
@@ -48,13 +48,13 @@
         <v-btn text to="/signin" v-if="!signIn">
             <span>
                 <v-icon left>lock</v-icon>
-                Sign In
+                Log In
             </span>
         </v-btn>
-        <v-btn text v-if="signIn" @click="logout">
+        <v-btn text v-if="signIn" class="hidden-xs-only text-capitalize" @click="logout">
             <span>
                 <v-icon left>exit_to_app</v-icon>
-                Sign Out
+                Log Out
             </span>
         </v-btn>
     </v-app-bar>

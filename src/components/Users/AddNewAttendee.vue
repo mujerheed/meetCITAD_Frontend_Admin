@@ -48,6 +48,9 @@
                   required
                   v-model.trim="newAttendance.phone"
                 ></v-text-field>
+                <!-- <vue-tel-input v-model.trim="newAttendance.phone"  aria-label="Phone Number"></vue-tel-input> -->
+              </v-col>
+              <v-col cols="12">
                 <v-select
                   name="gender"
                   :items="gender"
@@ -74,12 +77,13 @@
 import axios from "axios";
 export default {
   props: ['eventID'],
+
   data: () => ({
     dialog: false,
     gender: ["Male", "Female"],
     newAttendance: {},
   }),
-
+  
   methods: {
     close() {
       return (this.dialog = false);
@@ -87,7 +91,10 @@ export default {
     save() {
       axios.post("user/created-users", this.newAttendance)
       .then(result => {
-        const UserId = {userId: (result.data._id)}
+        let UserId = {
+          userId: (result.data._id)
+        }
+
         axios.post(`admin/attended-users/${this.eventID}`, UserId)
             .then(res => {
                 console.log(res);

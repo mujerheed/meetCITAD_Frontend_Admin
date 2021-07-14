@@ -121,6 +121,10 @@ export default {
           this.$store.dispatch('updateEvent', editedEvent)
         },
         
+    },
+
+    updated() {
+        this.$store.dispatch('getEvents')
     }
 }
 </script>

@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from '../router/index'
 
 export const actions = {
-  createEvent({ commit }, payload){
+  createEvent({ commit, dispatch }, payload){
     //POST NEW EVENT
     commit('loading', true)
     commit('clear')
@@ -11,6 +11,7 @@ export const actions = {
       .then(data => {
         commit('loading', false)
         commit('successfulMessage', 'Success')
+        dispatch('getEvents')
         console.log(data);
       })
       .catch(error => {
@@ -58,7 +59,6 @@ export const actions = {
     .then(response => {
       commit('loading', false)
       commit('updateEventData', payload)
-
       console.log(response)
     })
     .catch(error => {
@@ -68,7 +68,22 @@ export const actions = {
     })
   },
 
-  signAdminIn({ commit }, adminData) {
+  deleteEvent({commit, dispatch}, payload) {
+    let eventId = payload.id
+    axios.delete(`event/events/${eventId}`).then(
+      response => {
+          commit('loading', false)
+          dispatch('getEvents')
+          console.log(response);
+      }
+    ).catch((error) => {
+      commit('loading', false)
+      commit('failedMessage', error)
+      console.log(error)
+    })
+  },
+
+  signAdminIn({ commit, dispatch }, adminData) {
     //GET ADMIN SIGN IN DATA
     commit('loading', true)
     commit('clear')
@@ -76,10 +91,11 @@ export const actions = {
     axios.post('/admin/login', adminData)
       .then(response => {
         commit('loading', false)
-        commit('adminSignIn', true)
         console.log(response);
         localStorage.setItem('jwtToken', response.data.adminToken) //SET TOKEN TO LOCAL_STORAGE
+        commit('adminSignIn', true)
         commit('successfulMessage', response.data.message)
+        dispatch('getEvents')
         router.push('/')
       })
       .catch(error => {
@@ -91,12 +107,17 @@ export const actions = {
       })
   },
 
-  signAdminOut({commit}) {
-    //ADMIN SIGNIN
+  signAdminOut({commit, state}) {
+    //ADMIN SIGNOUT
     commit('adminSignIn', false)
     localStorage.clear()
-    router.push('/signin')
+    state.AdminLogin = false
+    state.EventList = null
+    state.SuggestionMessage = null
+    state.RegisteredUsers = null
+    state.AttendedUsers = null
 
+    router.push('/signin')
   },
 
   getSuggestions({ commit }) {
@@ -105,10 +126,10 @@ export const actions = {
     commit('clear')
 
     axios.get("admin/suggestions")
-      .then(responseData => {
+      .then(response => {
         commit('loading', false)
-       
-        console.log(responseData);
+        commit('suggestions', response.data)
+        console.log(response);
       })
       .catch(error => {
         commit('loading', false)
@@ -124,12 +145,12 @@ export const actions = {
     commit('clear')
 
     axios.get(`admin/registered-users/${payload}`)
-      .then(responseData => {
+      .then(response => {
         commit('loading', false)
         commit('successfulMessage', 'Success')
-        commit('registeredUsers', responseData.data)
+        commit('registeredUsers', response.data)
        
-        console.log(responseData);
+        console.log(response);
       })
       .catch(error => {
         commit('loading', false)
@@ -145,12 +166,12 @@ export const actions = {
     commit('clear')
 
     axios.get(`admin/attended-users/${payload}`)
-      .then(responseData => {
+      .then(response => {
         commit('loading', false)
         commit('successfulMessage', 'Success')
-        commit('attendedUsers', responseData.data)
+        commit('attendedUsers', response.data)
         
-        console.log(responseData);
+        console.log(response);
       })
       .catch(error => {
         commit('loading', false)
@@ -158,5 +179,6 @@ export const actions = {
         
         console.log(error)
       })
-  }
+  },
+
 }

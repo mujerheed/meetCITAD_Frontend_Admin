@@ -8,14 +8,17 @@
       <v-container grid-list-lg >
         <v-layout row wrap mt-3>
             <v-flex class="text-center">
-                <p>Welcome Admin to CITAD Event App</p>
+                <p>Welcome back Admin to CITAD Event App</p>
             </v-flex>
         </v-layout>
         <v-layout row wrap>
-            <v-flex xs-12 sm6 class="text-xs-center text-sm-right">
+          <div class="text-xs-center" v-if="!latestEvents">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          </div>
+            <v-flex xs-12 sm6 class="text-center text-sm-right">
                 <v-btn color="info" large to="/events">Explore Events</v-btn>
             </v-flex>
-            <v-flex xs-12 sm6 class="text-xs-center text-sm-left">
+            <v-flex xs-12 sm6 class="text-center text-sm-left">
                 <v-btn color="info" large to="/add-event">Organise Event</v-btn>
             </v-flex>
         </v-layout>
@@ -49,6 +52,10 @@ import Welcome from '../views/Welcome.vue'
   export default {
   components: { Welcome },
     name: 'Home',
+    
+    beforeCreate() {
+      this.$store.dispatch('getEvents')
+    },
 
     data: () => ({
       

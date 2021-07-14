@@ -27,6 +27,14 @@ export const getters = {
 
   loadSuggestion(state) {
     return state.SuggestionMessage
+  },
+
+  successMessage(state) {
+    return state.Success
+  },
+  
+  errorMessage(state) {
+    return state.Failed
   }
 
 }

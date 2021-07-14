@@ -37,11 +37,8 @@
                                     <div> {{ event.description }}
                                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam dicta quaerat recusandae libero maiores saepe nemo eaque voluptate odit esse ducimus aliquid laborum, tenetur magni ipsa exercitationem facere tempore minima!
                                     </div>
-                                    <v-card-actions class="align-end">
-                                        <v-btn color="info" class="text-center mr-1 text-capitalize" @click="deleteEvent(event._id)">
-                                            <v-icon left>delete</v-icon>
-                                            <span>Delete</span>
-                                        </v-btn>
+                                    <v-card-actions class="align-center">
+                                        <alert :id="`${event._id}`"/>
                                         <v-spacer></v-spacer>
                                         <v-btn color="info" class="text-center text-capitalize" :to="`/events/${event._id}`">
                                             <v-icon left>mdi-arrow-right</v-icon>
@@ -59,7 +56,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import alert from './Verification.vue'
 export default {
     name: 'EventsList',
 
@@ -67,22 +64,14 @@ export default {
         msg: '',
     }),
 
-    methods: {
-        deleteEvent(eventId) {
-            axios.delete(`event/events/${eventId}`).then(
-                res => {
-                    this.msg = res.data.message
-                }
-            ).catch(() => {
-                console.log("Something is not right out there")
-            })
-        }
-    },
-
     computed: {
         eventLists() {
             return this.$store.getters.loadEvents
         }
+    },
+
+    components: {
+        alert
     }
 }
 </script>

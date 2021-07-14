@@ -20,8 +20,6 @@ export default {
     NavigationBar,
   },
 
-  data: () => ({
-    //
-  }),
+  
 };
 </script>
