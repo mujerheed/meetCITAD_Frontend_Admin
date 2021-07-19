@@ -53,9 +53,9 @@ import Welcome from '../views/Welcome.vue'
   components: { Welcome },
     name: 'Home',
     
-    beforeCreate() {
-      this.$store.dispatch('getEvents')
-    },
+    // created() {
+    //   this.$store.dispatch('getEvents')
+    // },
 
     data: () => ({
       
@@ -63,7 +63,7 @@ import Welcome from '../views/Welcome.vue'
     computed: {
       notAuth(){
         let auth = this.$store.getters.adminAuth 
-        return auth === false || auth === null
+        return !auth
       },
 
       latestEvents() {

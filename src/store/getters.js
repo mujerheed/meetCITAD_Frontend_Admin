@@ -1,14 +1,24 @@
 export const getters = {
   loadEvents(state) {
-    return state.EventList.sort((firstEvent, secondEvent) => {
-      return firstEvent.date > secondEvent.date
-    })
+    if (state.EventList??length) {
+      return state.EventList.sort((firstEvent, secondEvent) => {
+        return firstEvent.date > secondEvent.date
+      }) 
+    }
   },
 
   singleEvent(state) {
     return (eventId) => {
       return state.EventList.find((event) => {
         return event._id === eventId
+      })
+    }
+  },
+
+  suggestion(state) {
+    return (comId) => {
+      return state.SuggestionMessage.find((comment) => {
+        return comment._id === comId
       })
     }
   },

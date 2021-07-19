@@ -13,7 +13,7 @@
 
 					<v-card-text >
 							<v-layout row wrap mb-4>
-									<v-flex xs6 class="display-1">
+									<v-flex xs6 class="">
 											<v-container>
 													<div>
 															{{ event.description }}
@@ -29,6 +29,13 @@
 													</div>
 													<div>
 															Host: {{ event.hostBy }}
+													</div>
+													<div>
+														Seats: {{ event.availableSeat }}
+													</div>
+													<v-spacer></v-spacer>
+													<div>
+														<v-btn color="blue darken-1" dark @click="sendReminder">Send Reminder</v-btn>
 													</div>
 											</v-container>
 									</v-flex>
@@ -74,6 +81,15 @@ export default {
     methods: {
 			back() {
 					return this.$router.go(-1)
+			},
+
+			sendReminder() {
+				let comfirm = confirm("Do you want to send a Reminder to the Registered Users?")
+				if (comfirm == true) {
+					return this.$store.dispatch('remindUsers', this.eventId)
+				}else {
+					return
+				}
 			}
     },
 

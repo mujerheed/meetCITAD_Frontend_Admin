@@ -52,7 +52,7 @@
             </span>
         </v-btn>
         <v-btn text v-if="signIn" class="hidden-xs-only text-capitalize" @click="logout">
-            <span>
+            <span @click="logout">
                 <v-icon left>exit_to_app</v-icon>
                 Log Out
             </span>
@@ -80,7 +80,7 @@ export default {
     computed: {
         signIn(){
             let auth = this.$store.getters.adminAuth 
-            return ( auth !== false ) && ( auth !== null )
+            return auth === true
         }
 
     },
@@ -94,5 +94,10 @@ export default {
 </script>
 
 <style scoped>
-
+  .styleLink {
+    text-decoration: none;
+  }
+  .active {
+    border-left: 1px solid black;
+  }
 </style>

@@ -1,21 +1,22 @@
 <template>
     <v-container>
         <v-card xs-12 sm-6 md-6>
+            <div v-if="message">
             <v-snackbar
                 :top="true"
                 color="warning"
                 timeout="3000"
                 outlined
                 v-model="hide"
-                v-if="message === `You are already an Attendee of this event`"
             >
-                The User already in the attendance list
+                {{ message }}
                 <v-btn text @click.native="hide = false">Close</v-btn>
             </v-snackbar>
+            </div>
             <v-card-title primary-title>
                 <v-toolbar color="primary" dark>
                     <v-toolbar-title>
-                        <h3> {{ eventInfo.title }} {{ message }}</h3>
+                        <h3> {{ eventInfo.title }}</h3>
                     </v-toolbar-title>
                 </v-toolbar>                
             </v-card-title>
@@ -45,14 +46,16 @@
                         :headers="headers"
                         :items="regUsers"
                         class="elevation-1"
+                        :loading="loading"
+                        loading-text="Loading... Please wait"
                     >
                     <template v-slot:item.attendance="{ item }">
-                        <v-simple-checkbox
+                        <v-checkbox
                         v-model="item.attendance"
                         :ripple="false"
                         @click.prevent="{{ item.attendance ? attend(item._id) : notAttend(item._id) }}"
                         >
-                        </v-simple-checkbox>
+                        </v-checkbox>
                     </template>
                     </v-data-table>
                 </v-row>
@@ -95,7 +98,8 @@ export default {
     },
 
     created() {
-        this.$store.dispatch('getRegisteredUsers', this.eventID)  
+        this.$store.dispatch('getRegisteredUsers', this.eventID)
+        console.log(this.checkAttend("60f5735abba22c258e1b0a97"));  
     },
 
     methods: {
@@ -106,11 +110,12 @@ export default {
           }
             axios.post(`admin/attended-users/${this.eventID}`, UserID)
             .then(res => {
-                this.$store.commit('failedMessage', res.data.msg)
+                this.$store.commit('attendedUser', UserID)
                 console.log(res);
             })
             .catch(err => {
                 console.log(err);
+                this.$store.commit('failedMessage', (err.response.data.error))
             })
         },
 
@@ -121,28 +126,18 @@ export default {
           axios.post(`admin/notattended-users/${this.eventID}`, UserID)
           .then(res => {
               console.log(res);
+              this.$store.commit('unAttendedUser', UserID)
           })
           .catch(err => {
               console.log(err);
+              this.$store.commit('failedMessage', (err.response.data.error))
           })
         },
 
         back() {
             this.$router.back(-1)
-        },
+        }
 
-        // checkAttendance() {
-        //     let attendance = ''
-        //     for (const iterator of this.attended.attendedUsers) {
-        //     let attend = this.regUsers.attendance.findIndex(uID => uID === iterator._id) >= 0
-        //     if(attend === true) {
-        //         attendance = true
-        //     }
-        //         attendance = false
-        // }
-        // return attendance   
-            
-        // },
     },
     computed: {
         eventID (){
@@ -157,12 +152,16 @@ export default {
             return this.$store.getters.loadRegisteredUsers
         },
 
-        attended() {
-            return this.$store.getters.loadAttendedUsers
+        message() {
+            return this.$store.getters.error
         },
 
-        message() {
-            return this.$store.getters.errorMessage
+        checkAttend() {
+            return (user) => (this.$store.getters.loadAttendedUsers.attendedUsers).findIndex(ev => ev._id == user) >= 0
+        },
+
+        loading() {
+            return this.$store.getters.loading
         }
     }
 }

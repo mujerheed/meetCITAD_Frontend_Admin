@@ -36,6 +36,12 @@
                                 v-model.trim="editedLocation"
                             ></v-text-field>
                             <v-text-field
+                                name="seat"
+                                label="Available Seat"
+                                required
+                                v-model.trim="editedSeat"
+                            ></v-text-field>
+                            <v-text-field
                                 name="hostBy"
                                 label="Host By"
                                 required
@@ -50,7 +56,6 @@
                                     v-on="on"
                                     readonly
                                     :value="editedDate"
-                                    prepend-icon="date_range"
                                 ></v-text-field>
                                 </template>
                                 <v-date-picker v-model.trim="editedDate"></v-date-picker>
@@ -64,7 +69,6 @@
                                     :value="editedTime"
                                     v-on="on"
                                     readonly
-                                    prepend-icon="schedule"
                                 ></v-text-field>
                                 </template>
                                 <v-time-picker
@@ -100,6 +104,7 @@ export default {
           editedDescription: this.event.description,
           editedLocation: this.event.venue,
           editedHostBy: this.event.hostBy,
+          editedSeat: this.event.availableSeat,
           editedDate: null,
           editedTime: null
         }
@@ -107,7 +112,6 @@ export default {
 
     methods: {
         onSave() {
-          this.dialog = false
           const editedEvent = {
             id: this.event._id,
             title: this.editedTitle,
@@ -115,10 +119,12 @@ export default {
             venue: this.editedLocation,
             hostBy: this.editedHostBy,
             date: this.editedDate,
-            time: this.editedTime
+            time: this.editedTime,
+            seat: this.editedSeat
           }
           
           this.$store.dispatch('updateEvent', editedEvent)
+          this.dialog = false
         },
         
     },

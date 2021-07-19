@@ -7,7 +7,8 @@
                     <v-text-field 
                     append-icon="search" 
                     hide-details 
-                    single-line 
+                    single-line
+                    v-model.trim="searchByTitle" 
                     placeholder="Search an event by title..."
                     ></v-text-field>
                 </v-card>
@@ -17,7 +18,7 @@
             <v-flex xs12 sm8 offset-sm2>
                 <v-expansion-panels focusable>
                     <v-expansion-panel
-                        v-for="event in eventLists"
+                        v-for="event in filteredEvent"
                         :key="event._id"
                         class="mb-2"
                     >
@@ -34,9 +35,7 @@
                                     </v-card>
                                 </v-col>
                                 <v-col cols="8">
-                                    <div> {{ event.description }}
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam dicta quaerat recusandae libero maiores saepe nemo eaque voluptate odit esse ducimus aliquid laborum, tenetur magni ipsa exercitationem facere tempore minima!
-                                    </div>
+                                    <div> {{ event.description }} </div>
                                     <v-card-actions class="align-center">
                                         <alert :id="`${event._id}`"/>
                                         <v-spacer></v-spacer>
@@ -62,11 +61,14 @@ export default {
 
     data: () => ({
         msg: '',
+        searchByTitle: ''
     }),
 
     computed: {
-        eventLists() {
-            return this.$store.getters.loadEvents
+        filteredEvent (){
+            return this.$store.getters.loadEvents.filter((event) => {
+                return event.title.match(this.searchByTitle)
+            })
         }
     },
 

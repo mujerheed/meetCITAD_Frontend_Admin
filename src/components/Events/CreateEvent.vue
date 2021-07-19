@@ -16,8 +16,7 @@
                             <v-text-field
                                 name="title"
                                 label="Title"
-                                id="title"
-                                v-model="title"
+                                v-model.trim="title"
                                 required
                                 prepend-icon="mdi-folder"
                             ></v-text-field>
@@ -26,7 +25,7 @@
                     <v-layout row wrap>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-textarea
-                                v-model="description"
+                                v-model.trim="description"
                                 auto-grow
                                 label="Description"
                                 name="description"
@@ -40,10 +39,21 @@
                             <v-text-field
                                 name="venue"
                                 label="Venue"
-                                id="venue"
-                                v-model="venue"
+                                v-model.trim="venue"
                                 required
                                 prepend-icon="location_on"
+                            ></v-text-field>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout row wrap>
+                        <v-flex xs12 sm6 offset-sm3>
+                            <v-text-field
+                                name="seat"
+                                label="Available Seat"
+                                v-model.trim="seat"
+                                type="number"
+                                required
+                                prepend-icon="mdi-seat"
                             ></v-text-field>
                         </v-flex>
                     </v-layout>
@@ -62,7 +72,7 @@
                             </v-btn>
                         </v-flex>
                         <v-flex xs12 sm6 offset-sm4 mt-2>
-                            <v-img :src="imageSrc" height="150" width="300"></v-img>
+                            <v-img :src="imageSrc" height="170" width="300"></v-img>
                         </v-flex>
                     </v-layout>
                     <v-layout row wrap>
@@ -70,8 +80,7 @@
                             <v-text-field
                                 name="hostBy"
                                 label="Host By"
-                                id="hostBy"
-                                v-model="hostBy"
+                                v-model.trim="hostBy"
                                 required
                                 prepend-icon="person"
                             ></v-text-field>
@@ -89,7 +98,7 @@
                                     prepend-icon="date_range"
                                 ></v-text-field>
                                 </template>
-                                <v-date-picker v-model="date"></v-date-picker>
+                                <v-date-picker v-model.trim="date"></v-date-picker>
                             </v-menu>
                         </v-flex>
                         <v-flex xs12 sm6 offset-sm3>
@@ -107,8 +116,8 @@
                                 ></v-text-field>
                                 </template>
                                 <v-time-picker
-                                    v-model="time"
-                                    format="24hrs"
+                                    v-model.trim="time"
+                                    format="24hr"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
@@ -135,6 +144,7 @@ export default {
         hostBy: null,
         date: null,
         time: null,
+        seat: null,
         eventImage: null,
         imageSrc: null,
         isDisplay: false
@@ -161,7 +171,6 @@ export default {
         },
         
         onCreateEvent () {
-
             const myFormData = new FormData(this.$refs.myForm)
             this.$store.dispatch('createEvent', myFormData)
              

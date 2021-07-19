@@ -12,7 +12,7 @@
                 outlined
                 v-model="snackbar"
                 >
-                  Username or Password is Incorrect!!!
+                  {{ error }}
                 <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
               </v-snackbar>
             </v-card>
@@ -32,6 +32,7 @@
                 <v-text-field
                   name="email"
                   label="Email"
+                  type="email"
                   v-model.trim="email"
                   required
                   outlined
@@ -73,20 +74,18 @@ export default {
     }),
 
     methods: {
-        userSign(){
+      userSign(){
 
-          if (this.email == '' && this.password == '') {
-            return 
-          }
-          this.$store.dispatch('signAdminIn', {
-            email: this.email,
-            password: this.password
-            })
+        if (this.email == '' && this.password == '') {
+          return 
         }
+        this.$store.dispatch('signAdminIn', {
+          email: this.email,
+          password: this.password
+          })
+      }
     },
-    deactivated() {
-      this.$store.dispatch('getEvents')
-    },
+
     computed: {
       error(){
         return this.$store.getters.errorMessage

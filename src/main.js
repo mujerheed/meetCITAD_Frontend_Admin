@@ -21,12 +21,20 @@ new Vue({
   vuetify,
   store,
   render: h => h(App),
-  updated() {
+  created() {
     let tokenExist = localStorage.getItem('jwtToken');
+    let tokenExpiration = localStorage.getItem('expiration')
     
     if (tokenExist && tokenExist !== undefined) {
-      return store.dispatch('getEvents') && store.dispatch('getSuggestions')
+      store.dispatch('getEvents')
+      store.dispatch('getSuggestions')
+    }else {
+      return
     }
-    store.state.EventList = null
+    
+    let date = new Date()
+    if (tokenExist && tokenExpiration < (date.getTime()/1000)) {
+      store.dispatch('signAdminOut')
+    }
   }
 }).$mount('#app')

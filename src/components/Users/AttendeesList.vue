@@ -3,7 +3,7 @@
     <h3>Attendees of {{title}}</h3>
     <v-card class="justify-center mt-2">
     <v-layout row wrap>
-      <v-simple-table fixed-header class="pa-3" height="350" width="400" id="myTable">
+      <v-simple-table fixed-header class="pa-3" height="350" style="width:100%" loading id="myTable">
         <thead>
           <tr>
             <th>S/N</th>
@@ -49,7 +49,7 @@
         <v-list-item>
           <v-list-item-title>
             <json-excel class="btn btn-default" :data="attendeesList" :fields="dataField" :name="`${title}.xls`">
-              Excel
+              Excel 
             </json-excel>
           </v-list-item-title>
         </v-list-item>
@@ -73,7 +73,7 @@ export default {
 
   data() {
     return {
-      name:"add",
+      name:"Attendees",
       attendeesList: this.$store.getters.loadAttendedUsers.attendedUsers,
       title: this.$store.getters.loadAttendedUsers.title,
       dataField: {
@@ -84,7 +84,7 @@ export default {
         'Gender': 'gender'
       }
     }
-  },
+  }, 
   computed: {
     attendees() {
       return this.$store.getters.loadAttendedUsers

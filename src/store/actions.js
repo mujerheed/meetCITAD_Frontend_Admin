@@ -15,9 +15,9 @@ export const actions = {
         console.log(data);
       })
       .catch(error => {
+        let bug = error.response.data.error
         commit('loading', false)
-        commit('failedMessage', error)
-        console.log(error);
+        commit('failedMessage', bug)
       })
   
   },
@@ -30,14 +30,16 @@ export const actions = {
     axios.get("event/events")
       .then(response => {
         commit('loading', false)
-        const eventInfo = response.data
+        console.log(response);
+        const eventInfo = response.data.Events
+        localStorage.setItem('expiration', response.data.tokenExpiration)
         commit('allEvents', eventInfo)
         commit('successfulMessage', 'Success')
       })
       .catch(error => {
+        let bug = error.response.data.error
         commit('loading', false)
-        commit('failedMessage', error)
-        console.log(error)
+        commit('failedMessage', bug)
       })
 
   },
@@ -50,7 +52,8 @@ export const actions = {
       venue: payload.editedLocation,
       hostBy: payload.editedHostBy,
       date: payload.editedDate,
-      time: payload.editedTime
+      time: payload.editedTime,
+      seat: payload.editedSeat
     }
     commit('loading', true)
     commit('clear')
@@ -62,9 +65,9 @@ export const actions = {
       console.log(response)
     })
     .catch(error => {
-      commit('loading', false)
-      commit('failedMessage', error)
-      console.log(error)
+      let bug = error.response.data.error
+        commit('loading', false)
+        commit('failedMessage', bug)
     })
   },
 
@@ -77,9 +80,9 @@ export const actions = {
           console.log(response);
       }
     ).catch((error) => {
-      commit('loading', false)
-      commit('failedMessage', error)
-      console.log(error)
+      let bug = error.response.data.error
+        commit('loading', false)
+        commit('failedMessage', bug)
     })
   },
 
@@ -99,11 +102,12 @@ export const actions = {
         router.push('/')
       })
       .catch(error => {
+        let bug = error.response.data.error
         commit('loading', false)
         commit('adminSignIn', false)
-        commit('failedMessage', error)
+        commit('failedMessage', bug)
        
-        console.log(error);
+        console.log(bug);
       })
   },
 
@@ -112,10 +116,10 @@ export const actions = {
     commit('adminSignIn', false)
     localStorage.clear()
     state.AdminLogin = false
-    state.EventList = null
-    state.SuggestionMessage = null
-    state.RegisteredUsers = null
-    state.AttendedUsers = null
+    state.EventList = []
+    state.SuggestionMessage = []
+    state.RegisteredUsers = []
+    state.AttendedUsers = []
 
     router.push('/signin')
   },
@@ -132,12 +136,28 @@ export const actions = {
         console.log(response);
       })
       .catch(error => {
+        let bug = error.response.data.error
         commit('loading', false)
-        commit('failedMessage', error)
-       
-        console.log(error);
+        commit('failedMessage', bug)
       })
   },
+
+  replySuggestions ({ commit }, payload) {
+    commit('loading', true)
+    commit('clear')
+
+    axios.post('/reply-comment', payload)
+      .then(response => {
+        commit('loading', false)
+        console.log(response);
+      })
+      .catch(error => {
+        let bug = error.response.data.error
+        commit('loading', false)
+        commit('failedMessage', bug)
+      })
+
+  }, 
 
   getRegisteredUsers({ commit }, payload) {
     //GET ALL SUGGESTION MESSAGES
@@ -153,10 +173,10 @@ export const actions = {
         console.log(response);
       })
       .catch(error => {
+        let bug = error.response.data.error
         commit('loading', false)
-        commit('failedMessage', error)
-        
-        console.log(error);
+        commit('failedMessage', bug)
+        console.log(error.response);
       })
   },
 
@@ -164,21 +184,37 @@ export const actions = {
     //GET ALL ATTENDEED MESSAGES
     commit('loading', true)
     commit('clear')
-
+    
     axios.get(`admin/attended-users/${payload}`)
       .then(response => {
         commit('loading', false)
         commit('successfulMessage', 'Success')
-        commit('attendedUsers', response.data)
+        commit('attendees', response.data)
         
         console.log(response);
       })
       .catch(error => {
+        let bug = error.response.data.error
         commit('loading', false)
-        commit('failedMessage', error)
-        
-        console.log(error)
+        commit('failedMessage', bug)
       })
   },
+
+  remindUsers ({ commit }, payload) {
+    commit('loading', true)
+    commit('clear')
+    let eventID = payload
+
+    axios.post(`reminder/:${eventID}`)
+      .then(response => {
+        commit('loading', false)
+        console.log(response);
+      })
+      .catch(error => {
+        let bug = error.response.data.error
+        commit('loading', false)
+        commit('failedMessage', bug)
+      })
+  }
 
 }

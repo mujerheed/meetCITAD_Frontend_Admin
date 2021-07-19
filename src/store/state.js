@@ -2,7 +2,7 @@ export const state = {
 
   AdminLogin: null,
 
-  EventList: null,
+  EventList: [],
   
   Success: null,
   
@@ -10,10 +10,10 @@ export const state = {
 
   Loading: false,
   
-  SuggestionMessage: null,
+  SuggestionMessage: [],
 
-  RegisteredUsers: null,
+  RegisteredUsers: [],
 
-  AttendedUsers: null
+  AttendedUsers: []
   
 }
