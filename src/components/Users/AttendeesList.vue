@@ -44,11 +44,11 @@
       </template>
       <v-list>
         <v-list-item>
-          <v-list-item-title @click="generatePdf">PDF</v-list-item-title>
+          <v-list-item-title class="point" @click="generatePdf">PDF</v-list-item-title>
         </v-list-item>
         <v-list-item>
           <v-list-item-title>
-            <json-excel class="btn btn-default" :data="attendeesList" :fields="dataField" :name="`${title}.xls`">
+            <json-excel class="point" :data="attendeesList" :fields="dataField" :name="`${title}.xls`">
               Excel 
             </json-excel>
           </v-list-item-title>
@@ -124,3 +124,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .point {
+    cursor: pointer;;
+  }
+</style>

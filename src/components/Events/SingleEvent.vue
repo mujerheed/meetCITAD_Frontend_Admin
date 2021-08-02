@@ -3,6 +3,30 @@
 		<v-layout class="ma-4">
 			<v-flex xs12>
 					<v-card>
+            <v-card align-center v-if="message">
+              <v-snackbar
+                :top="true"
+                color="sucess"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ message }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
+            <v-card align-center v-if="error">
+              <v-snackbar
+                :top="true"
+                color="error"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ error }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
 					<v-toolbar color="blue darken-1" dark class="mb-5">
 							<h3> {{ event.title }} </h3>
 							<v-spacer></v-spacer>
@@ -25,7 +49,7 @@
 															Date: {{ event.date | formatDate }}
 													</div>
 													<div>
-															Time: {{ event.time }}
+															Time: {{ event.time | formatTime}}
 													</div>
 													<div>
 															Host: {{ event.hostBy }}
@@ -100,6 +124,14 @@ export default {
 
 			eventId() {
 				return this.$route.params._eventID
+			},
+
+			message() {
+				return this.$store.getters.successMessage
+			},
+
+			error() {
+				return this.$store.getters.errorMessage
 			}
 		},
 

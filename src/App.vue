@@ -1,10 +1,10 @@
 <template>
-  <v-app>
+  <v-app class="style">
 
     <NavigationBar />
     
     <v-main>
-      <router-view></router-view>
+        <router-view></router-view>
     </v-main>
 
   </v-app>
@@ -23,3 +23,11 @@ export default {
   
 };
 </script>
+
+<style>
+ .style {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: rgb(52, 52, 211);
+    color: white;
+  }
+</style>

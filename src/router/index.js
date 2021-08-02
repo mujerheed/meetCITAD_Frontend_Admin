@@ -9,6 +9,7 @@ import CreateEvent from '@/components/Events/CreateEvent'
 import RegisteredUsers from '@/components/Users/RegisteredUsers'
 import AttendedUsers from '@/components/Users/AttendeesList'
 import SuggestionInbox from '@/components/Users/SuggestionInbox'
+import Authenticated from './route-guard'
 
 Vue.use(VueRouter)
 
@@ -28,40 +29,46 @@ const routes = [
   {
     path: '/events',
     name: 'EventList',
-    component: EventsList
+    component: EventsList,
+    beforeEnter: Authenticated
   },
 
   {
     path: '/events/:_eventID',
     name: 'SingleEvent',
     props: true,
-    component: SingleEvent
+    component: SingleEvent,
+    beforeEnter: Authenticated
   },
 
   {
     path: '/events/:_eventID/registration',
     name: 'Register',
-    component: RegisteredUsers
+    component: RegisteredUsers,
+    beforeEnter: Authenticated
   },
 
   {
     path: '/events/:_eventID/attendees',
     name: 'Attendees',
-    component: AttendedUsers
+    component: AttendedUsers,
+    beforeEnter: Authenticated
   },
 
 
   {
     path: '/add-event',
     name: 'CreateEvent',
-    component: CreateEvent
+    component: CreateEvent,
+    beforeEnter: Authenticated
   },
 
 
   {
     path: '/suggestion-message',
     name: 'SuggestionInbox',
-    component: SuggestionInbox
+    component: SuggestionInbox,
+    beforeEnter: Authenticated
   }
 ]
 

@@ -1,6 +1,30 @@
 <template>
     <v-container mt-4>
         <v-layout row wrap>
+            <v-card align-center v-if="message">
+              <v-snackbar
+                :top="true"
+                color="sucess"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ message }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
+            <v-card align-center v-if="error">
+              <v-snackbar
+                :top="true"
+                color="error"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ error }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
             <v-flex xs12>
                 <v-card class="ma-5">
                     <p align-center> {{ msg }} </p>
@@ -61,7 +85,8 @@ export default {
 
     data: () => ({
         msg: '',
-        searchByTitle: ''
+        searchByTitle: '',
+        snackbar: false
     }),
 
     computed: {
@@ -69,6 +94,12 @@ export default {
             return this.$store.getters.loadEvents.filter((event) => {
                 return event.title.match(this.searchByTitle)
             })
+        },
+        error() {
+            return this.$store.getters.errorMessage
+        },
+        message() {
+            return this.$store.getters.successMessage
         }
     },
 

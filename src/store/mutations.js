@@ -1,6 +1,5 @@
 export const mutations = {
   allEvents(state, payload){
-    console.log('all events set');
     state.EventList = payload
   },
 
@@ -15,6 +14,7 @@ export const mutations = {
     event.hostBy = payload.hostBy
     event.date = payload.date
     event.time = payload.time
+    event.availbaleSeat = payload.availbaleSeat
   },
 
   adminSignIn (state, payload) {
@@ -39,13 +39,11 @@ export const mutations = {
     }else {
       state.AttendedUsers.attendedUsers.push(payload)
     }
-    console.log("FROM ATTENDEES");
   },
 
   unAttendedUser (state, payload) {
     let AttendedUser = state.AttendedUsers.attendedUsers
     AttendedUser.splice(AttendedUser.findIndex(user => user._id === payload.userId ), 1)
-    console.log("FROM UNATTENDEES");
   },
 
   successfulMessage(state, payload){

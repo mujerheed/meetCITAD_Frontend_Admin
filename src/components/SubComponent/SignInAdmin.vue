@@ -1,6 +1,11 @@
 <template>
   <v-container>
-    <v-layout row wrap class="mt-4">
+    <v-img
+      src="@/assets/images/bg-image4.jpeg"
+      contain
+      centered
+    >
+    <v-layout row wrap style="margin-top:50px">
       <v-flex xs12 sm6 offset-sm3 mt-6>
         <v-card>
           <v-card-title primary-title>
@@ -19,7 +24,7 @@
             <v-layout column align-center>
               <v-flex mt-3 mb-2>
                 <v-avatar size="80">
-                    <v-img src="../../assets/logo.svg" contain></v-img>
+                    <v-img src="../../assets/images/avatar.png" contain></v-img>
                 </v-avatar>
                 <h3>Sign In</h3>
               </v-flex>
@@ -59,6 +64,7 @@
         </v-card>
       </v-flex>
     </v-layout>
+    </v-img>
   </v-container>
 </template>
 

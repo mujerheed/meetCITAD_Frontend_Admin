@@ -1,6 +1,30 @@
 <template>
     <v-container>
         <v-layout row wrap>
+            <v-card align-center v-if="message">
+              <v-snackbar
+                :top="true"
+                color="sucess"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ message }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
+            <v-card align-center v-if="error">
+              <v-snackbar
+                :top="true"
+                color="error"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ error }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
             <v-flex xs12 sm6 offset-sm3 mb-3>
                 <h1>Create a new Event</h1>
             </v-flex>
@@ -48,7 +72,7 @@
                     <v-layout row wrap>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-text-field
-                                name="seat"
+                                name="availableSeat"
                                 label="Available Seat"
                                 v-model.trim="seat"
                                 type="number"
@@ -117,7 +141,6 @@
                                 </template>
                                 <v-time-picker
                                     v-model.trim="time"
-                                    format="24hr"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
@@ -147,7 +170,8 @@ export default {
         seat: null,
         eventImage: null,
         imageSrc: null,
-        isDisplay: false
+        isDisplay: false,
+        snackbar: false
     }),
 
     methods: {
@@ -178,6 +202,15 @@ export default {
              
         }
     },
+
+    computed: {
+        error() {
+            return this.$store.getters.errorMessage
+        },
+        message() {
+            return this.$store.getters.successMessage
+        }
+    }
 
 }
 </script>

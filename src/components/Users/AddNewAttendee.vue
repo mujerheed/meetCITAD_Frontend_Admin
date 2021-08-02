@@ -92,7 +92,7 @@ export default {
       axios.post("user/created-users", this.newAttendance)
       .then(result => {
         let UserId = {
-          userId: (result.data._id)
+          userId: (result.data.result._id)
         }
 
         axios.post(`admin/attended-users/${this.eventID}`, UserId)

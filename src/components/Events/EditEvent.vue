@@ -120,7 +120,7 @@ export default {
             hostBy: this.editedHostBy,
             date: this.editedDate,
             time: this.editedTime,
-            seat: this.editedSeat
+            availableSeat: this.editedSeat
           }
           
           this.$store.dispatch('updateEvent', editedEvent)
@@ -129,7 +129,7 @@ export default {
         
     },
 
-    updated() {
+    mounted() {
         this.$store.dispatch('getEvents')
     }
 }

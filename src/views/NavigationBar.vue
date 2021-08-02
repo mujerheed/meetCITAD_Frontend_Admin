@@ -30,7 +30,7 @@
                 class="hidden-sm-and-up"
                 v-if="signIn"
             ></v-app-bar-nav-icon>
-            <router-link to="/" class="styleLink">meetCITAD</router-link>
+            <router-link to="/" style="text-decoration: none; color: white">meetCITAD</router-link>
         </v-app-bar-title>
         
         <v-spacer></v-spacer>
@@ -45,7 +45,7 @@
                 <span> {{ nav.name }} </span>
             </v-tooltip>
         </v-toolbar-items>
-        <v-btn text to="/signin" v-if="!signIn">
+        <v-btn text plain to="/signin" v-if="!signIn">
             <span>
                 <v-icon left>lock</v-icon>
                 Log In

@@ -27,6 +27,7 @@
              label="Reply"
              prepend-icon="mdi-comment"
              multi-line
+             v-model="replyText"
            ></v-textarea>
         </v-card-text>
         <v-card-actions>
@@ -70,6 +71,9 @@
 
     methods: {
       replyComment() {
+        if (this.replyText == ""){
+          return alert("Please fill in all the fields!!!")
+        }
         let data = {
           email: this.userComment.email,
           reply: this.replyText

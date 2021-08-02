@@ -6,6 +6,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import store from './store'
 import filterDate from './filters/filter'
+import filterTime from './filters/timeFilter'
 import '../src/API/axios.config'
 import VueTelInput from 'vue-tel-input'
 import 'vue-tel-input/dist/vue-tel-input.css'
@@ -13,6 +14,7 @@ import 'vue-tel-input/dist/vue-tel-input.css'
 Vue.use(VueTelInput)
 
 Vue.filter('formatDate', filterDate)
+Vue.filter('formatTime', filterTime)
 
 Vue.config.productionTip = false
 

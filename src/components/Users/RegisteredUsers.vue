@@ -1,18 +1,5 @@
 <template>
     <v-container>
-        <v-card xs-12 sm-6 md-6>
-            <div v-if="message">
-            <v-snackbar
-                :top="true"
-                color="warning"
-                timeout="3000"
-                outlined
-                v-model="hide"
-            >
-                {{ message }}
-                <v-btn text @click.native="hide = false">Close</v-btn>
-            </v-snackbar>
-            </div>
             <v-card-title primary-title>
                 <v-toolbar color="primary" dark>
                     <v-toolbar-title>
@@ -20,7 +7,20 @@
                     </v-toolbar-title>
                 </v-toolbar>                
             </v-card-title>
+
             <v-card-text>
+            <v-card align-center v-if="error">
+              <v-snackbar
+                :top="true"
+                color="warning"
+                timeout="3000"
+                outlined
+                v-model="snackbar"
+                >
+                  {{ error }}
+                <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
+              </v-snackbar>
+            </v-card>
                 <v-row class="mt-3 mb-4">
                     <v-col cols="12" sm="5">
                         <v-avatar
@@ -31,9 +31,10 @@
                         </v-avatar>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
-                        {{ eventInfo.description }}<br>
-                        <br>
-                        <!-- {{ attended.length}} -->
+                        {{ eventInfo.description }}
+                        <br><br><br>
+                        <p v-if="number">No. of attendees on list {{ number.length }}</p>
+                        <p v-else>No one on the attendees list yet</p>
                         <hr>
                         <template class="mt-5">
                             <AddNewAttendee :eventID="eventID" />
@@ -42,10 +43,18 @@
                 </v-row>
                 <v-divider></v-divider> 
                 <v-row class="ml-2" cols="12">
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="regUsers"
                         class="elevation-1"
+                        :search="search"
                         :loading="loading"
                         loading-text="Loading... Please wait"
                     >
@@ -66,7 +75,6 @@
                 </v-card-actions>                
             </v-card-text>
 
-        </v-card>
     </v-container>
 
 </template>
@@ -91,31 +99,35 @@ export default {
           { text: 'Gender', width: 100, value: 'gender', sortable: false},
           { text: 'Attended', width: 100, value: 'attendance', sortable: false}
         ],
-        hide: false
+        hide: false,
+        snackbar: false,
+        search: ''
     }),
     components: {
         AddNewAttendee
     },
 
-    created() {
+    mounted() {
         this.$store.dispatch('getRegisteredUsers', this.eventID)
-        console.log(this.checkAttend("60f5735abba22c258e1b0a97"));  
+        this.$store.dispatch('getAttendedUsers', this.eventID) 
     },
 
     methods: {
-        
         attend(userId){
           const UserID = {
             userId: userId
           }
             axios.post(`admin/attended-users/${this.eventID}`, UserID)
             .then(res => {
+                let data = res.data.message
                 this.$store.commit('attendedUser', UserID)
-                console.log(res);
+                this.$store.commit('successfulMessage', data)
+                console.log(data);
             })
             .catch(err => {
-                console.log(err);
-                this.$store.commit('failedMessage', (err.response.data.error))
+                let bug = err.response.data.error
+                console.log(bug);
+                this.$store.commit('failedMessage', bug)
             })
         },
 
@@ -125,19 +137,26 @@ export default {
           }
           axios.post(`admin/notattended-users/${this.eventID}`, UserID)
           .then(res => {
-              console.log(res);
+              let data = res.data.message
+              this.$store.commit('successfulMessage', data)
               this.$store.commit('unAttendedUser', UserID)
+              console.log(data);
           })
           .catch(err => {
-              console.log(err);
-              this.$store.commit('failedMessage', (err.response.data.error))
+              let bug = err.response.data.error
+              console.log(bug);
+            this.$store.commit('failedMessage', bug)
           })
         },
 
         back() {
             this.$router.back(-1)
+        },
+        
+        onDismissed() {
+            console.log("Dismissed Works")
+            this.$store.dispatch('clear')
         }
-
     },
     computed: {
         eventID (){
@@ -152,18 +171,19 @@ export default {
             return this.$store.getters.loadRegisteredUsers
         },
 
-        message() {
-            return this.$store.getters.error
-        },
-
-        checkAttend() {
-            return (user) => (this.$store.getters.loadAttendedUsers.attendedUsers).findIndex(ev => ev._id == user) >= 0
+        error() {
+            return this.$store.getters.errorMessage
         },
 
         loading() {
             return this.$store.getters.loading
+        },
+
+        number() {
+            return this.$store.getters.loadAttendedUsers.attendedUsers
         }
-    }
+    },
+
 }
 </script>
 

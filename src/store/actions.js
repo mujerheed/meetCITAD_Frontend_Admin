@@ -8,15 +8,14 @@ export const actions = {
     commit('clear')
     
     axios.post("event/events", payload)
-      .then(data => {
+      .then(response => {
         commit('loading', false)
-        commit('successfulMessage', 'Success')
+        commit('successfulMessage', response.data.message)
         dispatch('getEvents')
-        console.log(data);
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
       })
   
@@ -30,15 +29,14 @@ export const actions = {
     axios.get("event/events")
       .then(response => {
         commit('loading', false)
-        console.log(response);
         const eventInfo = response.data.Events
         localStorage.setItem('expiration', response.data.tokenExpiration)
         commit('allEvents', eventInfo)
-        commit('successfulMessage', 'Success')
+        commit('successfulMessage', response.data.message)
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
       })
 
@@ -47,26 +45,26 @@ export const actions = {
   updateEvent({ commit }, payload) {
     //UPDATE/EDIT SINGLE AN EVENT
     const updatedData = {
-      title: payload.editedTitle,
-      description: payload.editedDescription,
-      venue: payload.editedLocation,
-      hostBy: payload.editedHostBy,
-      date: payload.editedDate,
-      time: payload.editedTime,
-      seat: payload.editedSeat
+      title: payload.title,
+      description: payload.description,
+      venue: payload.venue,
+      hostBy: payload.hostBy,
+      date: payload.date,
+      time: payload.time,
+      availableSeat: payload.availableSeat
     }
     commit('loading', true)
     commit('clear')
-
+    
     axios.patch(`event/events/${payload.id}`, updatedData)
     .then(response => {
       commit('loading', false)
       commit('updateEventData', payload)
-      console.log(response)
+      commit('successfulMessage', response.data.message)
     })
     .catch(error => {
       let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
     })
   },
@@ -76,12 +74,12 @@ export const actions = {
     axios.delete(`event/events/${eventId}`).then(
       response => {
           commit('loading', false)
+          commit('successfulMessage', response.data.message)
           dispatch('getEvents')
-          console.log(response);
       }
     ).catch((error) => {
       let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
     })
   },
@@ -94,7 +92,6 @@ export const actions = {
     axios.post('/admin/login', adminData)
       .then(response => {
         commit('loading', false)
-        console.log(response);
         localStorage.setItem('jwtToken', response.data.adminToken) //SET TOKEN TO LOCAL_STORAGE
         commit('adminSignIn', true)
         commit('successfulMessage', response.data.message)
@@ -103,11 +100,9 @@ export const actions = {
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('adminSignIn', false)
         commit('failedMessage', bug)
-       
-        console.log(bug);
       })
   },
 
@@ -133,11 +128,11 @@ export const actions = {
       .then(response => {
         commit('loading', false)
         commit('suggestions', response.data)
-        console.log(response);
+        commit('successfulMessage', response.data.message)
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
       })
   },
@@ -145,15 +140,15 @@ export const actions = {
   replySuggestions ({ commit }, payload) {
     commit('loading', true)
     commit('clear')
-
-    axios.post('/reply-comment', payload)
+    
+    axios.post('admin/reply-message', payload)
       .then(response => {
         commit('loading', false)
-        console.log(response);
+        commit('successfulMessage', response.data.message)
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
       })
 
@@ -167,16 +162,13 @@ export const actions = {
     axios.get(`admin/registered-users/${payload}`)
       .then(response => {
         commit('loading', false)
-        commit('successfulMessage', 'Success')
+        commit('successfulMessage', response.data.message)
         commit('registeredUsers', response.data)
-       
-        console.log(response);
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
-        console.log(error.response);
       })
   },
 
@@ -188,14 +180,12 @@ export const actions = {
     axios.get(`admin/attended-users/${payload}`)
       .then(response => {
         commit('loading', false)
-        commit('successfulMessage', 'Success')
+        commit('successfulMessage', response.data.message)
         commit('attendees', response.data)
-        
-        console.log(response);
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
       })
   },
@@ -205,14 +195,14 @@ export const actions = {
     commit('clear')
     let eventID = payload
 
-    axios.post(`reminder/:${eventID}`)
+    axios.post(`admin/reminder/${eventID}`)
       .then(response => {
         commit('loading', false)
-        console.log(response);
+        commit('successfulMessage', response.data.message)
       })
       .catch(error => {
         let bug = error.response.data.error
-        commit('loading', false)
+        commit('loading', true)
         commit('failedMessage', bug)
       })
   }

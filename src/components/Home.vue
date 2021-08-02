@@ -7,7 +7,7 @@
     <template v-if="!notAuth">
       <v-container grid-list-lg >
         <v-layout row wrap mt-3>
-            <v-flex class="text-center">
+            <v-flex class="text-center title">
                 <p>Welcome back Admin to CITAD Event App</p>
             </v-flex>
         </v-layout>
@@ -52,14 +52,15 @@ import Welcome from '../views/Welcome.vue'
   export default {
   components: { Welcome },
     name: 'Home',
-    
-    // created() {
-    //   this.$store.dispatch('getEvents')
-    // },
 
     data: () => ({
       
     }),
+
+    mounted() {
+      this.$store.dispatch('getEvents')
+      this.dialog = true
+    },
     computed: {
       notAuth(){
         let auth = this.$store.getters.adminAuth 
@@ -69,6 +70,9 @@ import Welcome from '../views/Welcome.vue'
       latestEvents() {
         return this.$store.getters.loadEvents.slice(0, 5)
       }
+    },
+    methods: {
+
     }
   }
 </script>
