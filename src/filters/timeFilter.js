@@ -8,9 +8,9 @@ export default (time) => {
       return tim
   }else {
       let my = g[0] - 12
-      g.splice(1,1,my)
-      g.push('pm')
+      g.splice(0,1,my)
       g.splice(1,0,":")
+      g.push('pm')
       let tim = g.join('')
       return tim
   }

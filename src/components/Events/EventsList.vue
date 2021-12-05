@@ -53,7 +53,7 @@
                             <v-row>
                                 <v-col cols="4">
                                     <v-card height="150" width="150">
-                                        <v-img :src="`http://localhost:3030/${event.eventImage}`" :alt="event.title"
+                                        <v-img :src="`https://meetcitad.herokuapp.com/${event.eventImage}`" :alt="event.title"
                                         height="100%" width="100%" >
                                         </v-img>
                                     </v-card>

@@ -8,7 +8,7 @@
       <v-container grid-list-lg >
         <v-layout row wrap mt-3>
             <v-flex class="text-center title">
-                <p>Welcome back Admin to CITAD Event App</p>
+                <p>Welcome back <br/> Admin to CITAD Event App</p>
             </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -31,7 +31,7 @@
                   <v-carousel-item
                     v-for="image of latestEvents"
                     :key="image._id"
-                    :src="`http://localhost:3030/${image.eventImage}`"
+                    :src="`https://meetcitad.herokuapp.com/${image.eventImage}`"
                     :to='`events/${image._id}`'
                     reverse-transition="fade-transition"
                     transition="fade-transition"
@@ -56,11 +56,10 @@ import Welcome from '../views/Welcome.vue'
     data: () => ({
       
     }),
-
     mounted() {
-      this.$store.dispatch('getEvents')
-      this.dialog = true
+      this.$store.dispatch("getEvents")
     },
+    
     computed: {
       notAuth(){
         let auth = this.$store.getters.adminAuth 

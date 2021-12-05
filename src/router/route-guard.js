@@ -3,6 +3,6 @@ export default (to, from, next) => {
   if(token) {
     next()
   }else {
-    next('/signin')
+    next('/signIn')
   }
 }

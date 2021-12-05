@@ -28,6 +28,7 @@
              prepend-icon="mdi-comment"
              multi-line
              v-model="replyText"
+             required             
            ></v-textarea>
         </v-card-text>
         <v-card-actions>
@@ -42,7 +43,8 @@
           <v-btn
             color="green darken-1"
             text
-            @click="replyComment"
+            @submit="replyComment"
+            type="submit"
           >
             Send
           </v-btn>
@@ -71,16 +73,16 @@
 
     methods: {
       replyComment() {
-        if (this.replyText == ""){
-          return alert("Please fill in all the fields!!!")
-        }
         let data = {
           email: this.userComment.email,
           reply: this.replyText
         }
-
-        this.$store.dispatch('replySuggestions', data)
-        this.dialog = false
+        if (this.replyText == '') {
+          alert('Please fill in the field')
+        }else {
+          this.$store.dispatch('replySuggestions', data)
+          this.dialog = false
+        }
       }
     }
   }

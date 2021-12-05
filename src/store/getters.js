@@ -1,8 +1,10 @@
+import moment from "moment"
+
 export const getters = {
   loadEvents(state) {
-    if (state.EventList??length) {
+    if (state.EventList.length > 0) {
       return state.EventList.sort((firstEvent, secondEvent) => {
-        return firstEvent.date > secondEvent.date
+        return new moment(secondEvent.date) - new moment(firstEvent.date)
       }) 
     }
   },

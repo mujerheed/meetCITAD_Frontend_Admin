@@ -45,7 +45,7 @@
                 <span> {{ nav.name }} </span>
             </v-tooltip>
         </v-toolbar-items>
-        <v-btn text plain to="/signin" v-if="!signIn">
+        <v-btn text plain to="/signIn" v-if="!signIn">
             <span>
                 <v-icon left>lock</v-icon>
                 Log In

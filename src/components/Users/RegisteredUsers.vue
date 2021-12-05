@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <div class=" xs12 sm12 md12">
             <v-card-title primary-title>
                 <v-toolbar color="primary" dark>
                     <v-toolbar-title>
@@ -21,13 +21,13 @@
                 <v-btn text color="primary" @click.native="snackbar = false">Close</v-btn>
               </v-snackbar>
             </v-card>
-                <v-row class="mt-3 mb-4">
+                <v-row class="mt-1 mb-4">
                     <v-col cols="12" sm="5">
                         <v-avatar
                             size="150"
                         >
-                            <img :src="`http://localhost:3030/${eventInfo.eventImage}`" :alt="eventInfo.title" v-if="regUsers">
-                            <img src="../../assets/logo.png" v-if="!regUsers"/>
+                            <img :src="`https://meetcitad.herokuapp.com/${eventInfo.eventImage}`" :alt="eventInfo.title" v-if="regUsers">
+                            <img src="../../assets/images/citad.jpeg" v-if="!regUsers"/>
                         </v-avatar>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
@@ -41,8 +41,8 @@
                         </template>
                     </v-col>
                 </v-row>
-                <v-divider></v-divider> 
-                <v-row class="ml-2" cols="12">
+                <!-- <v-divider></v-divider>  -->
+                <v-row class="container ml-5" cols="">
                     <v-text-field
                         v-model="search"
                         append-icon="mdi-magnify"
@@ -69,13 +69,13 @@
                     </v-data-table>
                 </v-row>
 
-                <v-card-actions class="mt-5 text-center">
-                    <v-btn color="primary" dark @click.native="back">Back</v-btn>
-                    <v-btn color="primary" dark to="attendees">View Attendees</v-btn>
-                </v-card-actions>                
+                <div class="mt-5 text-center">
+                    <v-btn color="primary" class="mr-3 text-capitalize" dark @click.native="back">Back</v-btn>
+                    <v-btn color="primary" class="ml-3 text-capitalize" dark to="attendees">View Attendees</v-btn>
+                </div>                
             </v-card-text>
 
-    </v-container>
+    </div>
 
 </template>
 
@@ -87,17 +87,12 @@ export default {
     name: 'Register',
     data: () => ({
         headers: [
-            {
-            text: 'Full Name',
-            align: 'start',
-            width: 270,
-            value: 'fullname',
-          },
-          { text: 'E-mail', width: 250, value: 'email' },
-          { text: 'Organisation', width: 260, value: 'organisation', sortable: false},
-          { text: 'Phone Number', width: 180, value: 'phone', sortable: false},
-          { text: 'Gender', width: 100, value: 'gender', sortable: false},
-          { text: 'Attended', width: 100, value: 'attendance', sortable: false}
+            { text: 'Attended', width: 80, value: 'attendance', sortable: false},
+            { text: 'Full Name', align: 'start', width: 270, value: 'fullname' },
+            { text: 'E-mail', width: 250, value: 'email' },
+            { text: 'Organisation', width: 260, value: 'organisation', sortable: false},
+            { text: 'Phone Number', width: 150, value: 'phone', sortable: false},
+            { text: 'Gender', width: 100, value: 'gender', sortable: false}
         ],
         hide: false,
         snackbar: false,

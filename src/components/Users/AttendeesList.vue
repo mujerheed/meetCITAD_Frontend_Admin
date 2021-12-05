@@ -67,8 +67,9 @@ import JsonExcel from 'vue-json-excel/JsonExcel.vue'
 
 export default {
   name: 'Attendees',
-  created() {
+  mounted() {
     this.$store.dispatch('getAttendedUsers', this.eventID)
+    this.attendedUser
   },
 
   data() {
@@ -82,13 +83,11 @@ export default {
         'Phone Number': 'phone',
         'Organisation': 'organisation',
         'Gender': 'gender'
-      }
+      },
+      attendees: []
     }
   }, 
   computed: {
-    attendees() {
-      return this.$store.getters.loadAttendedUsers
-    },
     eventID (){
       return this.$route.params._eventID
     },
@@ -117,6 +116,9 @@ export default {
       
       document.save(`${title}.pdf`)
     },
+    attendedUser() {
+      return this.attendees = this.$store.getters.loadAttendedUsers
+    }
   },
   
   components: {

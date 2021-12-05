@@ -66,7 +66,7 @@
 									<v-flex xs6>
 											<div>
 													<v-img
-														:src="`http://localhost:3030/${event.eventImage}`"
+														:src="`https://meetcitad.herokuapp.com/${event.eventImage}`"
 														aspect-ratio="1.7"
 														max-width="auto"
 														contain
@@ -99,15 +99,16 @@ export default {
     name: 'SingleEvent',
 
     data: () => ({
-      
+      snackbar: false
     }),
-
+	
     methods: {
 			back() {
 					return this.$router.go(-1)
 			},
 
 			sendReminder() {
+				this.snackbar = true
 				let comfirm = confirm("Do you want to send a Reminder to the Registered Users?")
 				if (comfirm == true) {
 					return this.$store.dispatch('remindUsers', this.eventId)

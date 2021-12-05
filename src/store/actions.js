@@ -116,7 +116,7 @@ export const actions = {
     state.RegisteredUsers = []
     state.AttendedUsers = []
 
-    router.push('/signin')
+    router.push('/')
   },
 
   getSuggestions({ commit }) {

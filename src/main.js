@@ -23,7 +23,7 @@ new Vue({
   vuetify,
   store,
   render: h => h(App),
-  created() {
+  beforeCreate() {
     let tokenExist = localStorage.getItem('jwtToken');
     let tokenExpiration = localStorage.getItem('expiration')
     

@@ -1,5 +1,5 @@
-import { format, parseISO } from 'date-fns'
+import moment from "moment"
 
 export default (value) => {
-  return value ? format(parseISO(value), 'EEEE, MMMM do yyyy') : ''
+  return value ? moment(value).format("MMMM, dddd Do YYYY") : ''
 }
